@@ -1,7 +1,5 @@
 import pyaudio
 import wave
-import sqlite3
-from pickle import dumps
 
 
 def record(filename, record_seconds):

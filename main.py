@@ -11,6 +11,7 @@ from recorder import record
 
 
 fname = 'recorded.wav'
+prev_fname = ''
 sec = 10
 values = []
 flag = ''
@@ -152,7 +153,20 @@ class MyWindow(QMainWindow):
     # При нажатии F или G активируется эта функция да
 
     def keyPressEvent(self, event):
-        global fname, sec, values
+        global fname, sec, values, prev_fname
+
+        if fname in values:
+            expand = 0
+            while True:
+                expand += 1
+                new_file_name = fname.split(".wav")[0] + str(expand) + ".wav"
+                if new_file_name in values:
+                    continue
+                else:
+                    prev_fname, fname = fname, new_file_name
+                    break
+        else:
+            prev_fname = fname
 
         cur = con.cursor()
 
@@ -173,6 +187,7 @@ class MyWindow(QMainWindow):
                 values.append(fname)
 
             self.logs.append(text)
+            fname = prev_fname
 
         elif event.key() == Qt.Key_G:
             if os.path.isfile(f"Records\\{fname}") is not True:
