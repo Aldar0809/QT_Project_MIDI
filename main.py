@@ -155,24 +155,24 @@ class MyWindow(QMainWindow):
     def keyPressEvent(self, event):
         global fname, sec, values, prev_fname
 
-        if fname in values:
-            expand = 0
-            while True:
-                expand += 1
-                new_file_name = fname.split(".wav")[0] + str(expand) + ".wav"
-                if new_file_name in values:
-                    continue
-                else:
-                    prev_fname, fname = fname, new_file_name
-                    break
-        else:
-            prev_fname = fname
-
         cur = con.cursor()
 
         time_now = datetime.today()
 
         if event.key() == Qt.Key_F:
+            if fname in values:
+                expand = 0
+                while True:
+                    expand += 1
+                    new_file_name = fname.split(".wav")[0] + str(expand) + ".wav"
+                    if new_file_name in values:
+                        continue
+                    else:
+                        prev_fname, fname = fname, new_file_name
+                        break
+            else:
+                prev_fname = fname
+
             record(f"Records\\{fname}", float(sec))
 
             text = f"time: '{time_now}'; RECORDED name: '{fname}'; "
